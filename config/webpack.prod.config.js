@@ -1,4 +1,4 @@
-const commonConfig = require('./webpack.common.config')
+const getCommonConfig = require('./webpack.common.config')
 const webpackMerge = require('webpack-merge')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
@@ -10,7 +10,7 @@ const nodeModuleDir = path.resolve(process.cwd(), 'node_module')
 const appDir = path.resolve(process.cwd(), 'app')
 const outputPath = path.resolve(process.cwd(), 'build')
 const assestPathName = 'assets'
-const config = webpackMerge(commonConfig, {
+const config = webpackMerge(getCommonConfig(false), {
   mode: 'production',
   output: {
     path: outputPath,

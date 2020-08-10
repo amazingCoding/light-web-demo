@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "light-web-demo",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -42,7 +42,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "light-web-core": "^0.0.3",
+    "light-web-core": "file:../light-web",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   }

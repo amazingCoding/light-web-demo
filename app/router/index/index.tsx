@@ -1,29 +1,45 @@
 import '../../assets/app.common.css'
+import *  as style from './css.css'
 import * as React from "react"
 import * as ReactDOM from "react-dom"
-import { LightWebCore, RouterActions, StyleTypes, BridgeEvents, SuccessResponse, InitResponse, ErrorResponse } from 'light-web-core'
-const config = {
+import { LightWebCore, ThemeTypes, ThemeConfig, BridgeEvents, SuccessResponse, InitResponse, ErrorResponse, PageConfig } from 'light-web-core'
+import { Router, App, EventComponent, Other } from '../../compoment'
+console.log(__DEV__);
+
+const config: PageConfig = {
   isHideNav: false,
-  statusStyle: StyleTypes.light,
+  statusStyle: ThemeTypes.dark,
   title: '标题',
-  titleColor: '#ffffff',
-  navBackgroundColor: '#000000',
+  titleColor: '#000000',
+  navBackgroundColor: '#ffffff',
   backgroundColor: '#f1f1f1',
   bounces: true,
   showCapsule: true,
+  theme: ThemeConfig.auto,
+}
+interface MainProp {
+  appController: LightWebCore
+}
+const Main = ({ appController }: MainProp) => {
+  return (
+    <div>
+      <Router nextPageName='detail' appController={appController} />
+      <Other appController={appController} />
+      <App appController={appController} />
+      <EventComponent appController={appController} />
+    </div>
+  )
 }
 const appController = new LightWebCore(
   config,
   (res: SuccessResponse<InitResponse>) => {
+    console.log('=== 初始化 成功回调 ===')
     console.log(res)
+    console.log('======');
+    ReactDOM.render(<Main appController={appController} />, document.getElementById("main"))
   },
   (err: ErrorResponse) => {
     console.log(err)
   }
 )
-const App = (): React.ReactElement => {
-  return(
-    <div>12</div>
-  )
-}
-ReactDOM.render(<App />, document.getElementById("main"))
+

@@ -1,4 +1,4 @@
-const commonConfig = require('./webpack.common.config')
+const getCommonConfig = require('./webpack.common.config')
 const webpackMerge = require('webpack-merge')
 const path = require('path')
 const webpack = require('webpack')
@@ -6,7 +6,7 @@ const process = require('process')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const nodeModuleDir = path.resolve(process.cwd(), 'node_module')
 const appDir = path.resolve(process.cwd(), 'app')
-const config = webpackMerge(commonConfig, {
+const config = webpackMerge(getCommonConfig(false), {
   mode: 'development',
   devtool: 'inline-source-map',
   plugins: [
