@@ -6,7 +6,7 @@ const process = require('process')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const nodeModuleDir = path.resolve(process.cwd(), 'node_module')
 const appDir = path.resolve(process.cwd(), 'app')
-const config = webpackMerge(getCommonConfig(false), {
+const config = webpackMerge(getCommonConfig(true), {
   mode: 'development',
   devtool: 'inline-source-map',
   plugins: [

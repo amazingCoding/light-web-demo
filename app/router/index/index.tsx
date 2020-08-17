@@ -9,7 +9,7 @@ console.log(__DEV__);
 const config: PageConfig = {
   isHideNav: false,
   statusStyle: ThemeTypes.dark,
-  title: '标题',
+  title: '标题标题标题标题标题标题标题标题标题标题',
   titleColor: '#000000',
   navBackgroundColor: '#ffffff',
   backgroundColor: '#f1f1f1',
@@ -18,7 +18,7 @@ const config: PageConfig = {
   theme: ThemeConfig.auto,
 }
 interface MainProp {
-  appController: LightWebCore
+  appController: LightWebCore 
 }
 const Main = ({ appController }: MainProp) => {
   return (
