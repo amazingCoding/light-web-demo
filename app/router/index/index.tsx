@@ -18,14 +18,14 @@ const config: PageConfig = {
   theme: ThemeConfig.auto,
 }
 interface MainProp {
-  appController: LightWebCore 
+  appController: LightWebCore
 }
 const Main = ({ appController }: MainProp) => {
   return (
     <div>
+      <App appController={appController} pageConfig={config} />
       <Router nextPageName='detail' appController={appController} />
       <Other appController={appController} />
-      <App appController={appController} />
       <EventComponent appController={appController} />
     </div>
   )

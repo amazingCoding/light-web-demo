@@ -3,7 +3,8 @@ import *  as style from './css.css'
 import { LightWebCore, ThemeTypes, BridgeEvents, SuccessResponse, InitResponse, ErrorResponse, PageResponse, EventRemove, ThemeConfig, PageConfig } from 'light-web-core'
 interface Prop {
   appController: LightWebCore
-  nextPageName?: string
+  nextPageName?: string,
+  pageConfig?: PageConfig,
 }
 let showEvent: EventRemove = null
 let hideEvent: EventRemove = null
@@ -68,13 +69,13 @@ export const EventComponent = ({ appController }: Prop): React.ReactElement => {
     </div>
   )
 }
-export const App = ({ appController }: Prop): React.ReactElement => {
-  const [hideNav, setHideNav] = React.useState<boolean>(false)
-  const [title, setTitle] = React.useState<string>('')
-  const [titleColor, setTitleColor] = React.useState<string>('')
-  const [navColor, setNavColor] = React.useState<string>('')
-  const [bgColor, setBgColor] = React.useState<string>('')
-  const [styleType, setStyleType] = React.useState<boolean>(true)
+export const App = ({ appController, pageConfig }: Prop): React.ReactElement => {
+  const [hideNav, setHideNav] = React.useState<boolean>(pageConfig.isHideNav)
+  const [title, setTitle] = React.useState<string>(pageConfig.title)
+  const [titleColor, setTitleColor] = React.useState<string>(pageConfig.titleColor)
+  const [navColor, setNavColor] = React.useState<string>(pageConfig.navBackgroundColor)
+  const [bgColor, setBgColor] = React.useState<string>(pageConfig.backgroundColor)
+  const [styleType, setStyleType] = React.useState<boolean>(pageConfig.statusStyle == ThemeTypes.dark)
   const [themeConfig, setThemeConfig] = React.useState<ThemeConfig>(appController.themeConfig)
 
 
@@ -185,8 +186,22 @@ export const App = ({ appController }: Prop): React.ReactElement => {
       </React.Fragment>
     )
   }
+  const renderTop = () => {
+    const { statusBarHeight, capsule } = appController.appInfo
+    const paddingY = capsule.y - statusBarHeight
+    return (
+      <React.Fragment>
+        <div className={style.statusBar} style={{ height: statusBarHeight }}></div>
+        <div className={style.navBar} style={{ height: capsule.height + paddingY * 2 }}>
+          <div className={style.navBarLine} style={{ width: capsule.x, height: capsule.height }}></div>
+          <div className={style.navBarLine2} style={{ width: capsule.width, height: capsule.height }}></div>
+        </div>
+      </React.Fragment>
+    )
+  }
   return (
     <div className={style.box}>
+      {hideNav ? renderTop() : null}
       <h2 className={style.title}>页面配置</h2>
       <div className={style.line}>
         <div className={style.lineLeft}>是否隐藏导航栏</div>
@@ -205,7 +220,7 @@ export const Router = ({ appController, nextPageName }: Prop): React.ReactElemen
     switch (routerAction) {
       case 0: {
         appController.push(
-          { name: nextPageName, extra: 'push 额外信息' },
+          { name: nextPageName, extra: { text: 'dsadsa' } },
           (res) => {
             console.log('=== push 成功回调 ===')
             console.log(res)
@@ -222,7 +237,7 @@ export const Router = ({ appController, nextPageName }: Prop): React.ReactElemen
       case 1: {
         const isToRoot = Number(e.currentTarget.getAttribute('data-root')) === 1
         appController.pop({
-          extra: 'pop extra',
+          extra: { 'test': 'pop extra' },
           isToRoot
         }, (err) => {
           console.log('=== pop 失败回调 ===')
@@ -289,6 +304,14 @@ export const Router = ({ appController, nextPageName }: Prop): React.ReactElemen
         })
         break
       }
+      case 99:{
+        appController.restart((err) => {
+          console.log('=== restart 失败回调 ===')
+          console.log(err)
+          console.log('======');
+        })
+        break
+      }
     }
   }
   return (
@@ -308,9 +331,8 @@ export const Router = ({ appController, nextPageName }: Prop): React.ReactElemen
       <div data-root={0} data-action={1} className={style.btnLine} onClick={handleBtnEvent}>返回上一页</div>
       <div data-action={5} className={style.btnLine} onClick={handleBtnEvent}>pop 到第二位置</div>
       <div data-root={1} data-action={1} className={style.btnLine} onClick={handleBtnEvent}>返回首页</div>
-      {
-        nextPageName === 'about' ? <div data-action={2} className={style.btnLine} onClick={handleBtnEvent}>替换</div> : ''
-      }
+      <div data-action={2} className={style.btnLine} onClick={handleBtnEvent}>替换</div>
+      <div data-action={99} className={style.btnLine} onClick={handleBtnEvent}>重启</div>
       {
         nextPageName === 'about' ? <div data-action={6} className={style.btnLine} onClick={handleBtnEvent}>替换 到第三个位置</div> : ''
       }

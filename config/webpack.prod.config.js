@@ -25,7 +25,7 @@ const config = webpackMerge(getCommonConfig(false), {
         parallel: true,
         sourceMap: true,
         uglifyOptions: {
-          compress: { drop_console: true },
+          // compress: { drop_console: true },
           output: { comments: false }
         }
       }),
